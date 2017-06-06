@@ -1,5 +1,7 @@
 var YOUTUBE_URL = 'https://www.googleapis.com/youtube/v3/search';
 var QUERY_HISTORY = null;
+var NEXT_PAGE_TOKEN = null;
+var PREV_PAGE_TOKEN = null;
 
 var RESULT_HTML_TEMPLATE = (
   '<div>' +
@@ -11,18 +13,15 @@ var RESULT_HTML_TEMPLATE = (
   '</div>'
 );
 
-function getDataFromApi(searchTerm, callback) {
+function getDataFromApi(searchTerm, callback, page) {
   var query = {
   	part: 'snippet',
   	key: 'AIzaSyCVbxGQAdJlblEf29sm3bVsC6rF_DyuAx0',
     q: searchTerm,
+    pageToken: page
   }
   QUERY_HISTORY = searchTerm;
   $.getJSON(YOUTUBE_URL, query, callback);
-}
-
-function nextPage(){
-
 }
 
 function renderResult(result) {
@@ -37,28 +36,38 @@ function renderResult(result) {
 }
 
 function displayGitHubSearchData(data) {
-  var results = data.items.map(function(item, index) {
-    return renderResult(item);
-  });
-  $('.js-search-results').html(results);
-  console.log(data);
+	var results = data.items.map(function(item, index) {
+		return renderResult(item);
+	});
+	$('.js-search-results').html(results);
+	console.log('API RESPONSE: \n');
+	console.dir(data);
+	NEXT_PAGE_TOKEN = data.nextPageToken;
+	PREV_PAGE_TOKEN = data.prevPageToken;
+	if(NEXT_PAGE_TOKEN){$('.js-nextpage').prop('disabled', false);}
+	if(PREV_PAGE_TOKEN){$('.js-prevpage').prop('disabled', false);}
 }
 
-function watchSubmit() {
-  $('.js-search-form').submit(function(event) {
-    event.preventDefault();
-    var queryTarget = $(event.currentTarget).find('.js-query');
-    var query = queryTarget.val();
-    // clear out the input
-    queryTarget.val("");
-    getDataFromApi(query, displayGitHubSearchData);
-  });
-}
+function watchButtons() {
+	$('.js-search-form').submit(function(event) {
+		event.preventDefault();
+		var queryTarget = $(event.currentTarget).find('.js-query');
+		var query = queryTarget.val();
+		// clear out the input
+		queryTarget.val("");
+		getDataFromApi(query, displayGitHubSearchData);
+	});
 
-function watchNext(){
-	$('.js-nextpage').unbind().click(function(){
-		nextPage(QUERY_HISTORY, displayGitHubSearchData);
+  	$('.js-nextpage').unbind().click(function(){
+		console.log('[More Results]');
+		getDataFromApi(QUERY_HISTORY, displayGitHubSearchData, NEXT_PAGE_TOKEN);
+	});
+
+ 	$('.js-prevpage').unbind().click(function(){
+  		
+		console.log('[Previous Results]');
+		getDataFromApi(QUERY_HISTORY, displayGitHubSearchData, PREV_PAGE_TOKEN);
 	});
 }
 
-$(watchSubmit);
+$(watchButtons);
