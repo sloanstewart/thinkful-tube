@@ -30,9 +30,7 @@ function renderResult(result) {
   template.find(".js-description").text(result.snippet.description);
   template.find(".js-date").text(result.snippet.publishedAt);
   template.find(".js-thumbnail").attr("src", result.snippet.thumbnails.medium.url)
-  								.unbind().click(function(){
-  									$('#ytplayer').attr("src", 'https://www.youtube.com/embed/'+result.id.videoId+'?autoplay=1');
-  								});
+  								;
   return template;
 }
 
@@ -71,3 +69,21 @@ function watchButtons() {
 }
 
 $(watchButtons);
+
+$('#test').unbind('click').click(function(){
+	console.log('light button clicked');
+	$('#ytplayer').attr("src", );
+	console.log('fade in');
+	$('.lightbox').fadeIn();
+});
+
+$(document).unbind('click').click(function(event) {
+	console.log('doc clicked');
+    if(!$(event.target).closest('.lightbox').length) {
+    	console.log('event.target is'+event.target);
+        if($('.lightbox').is(":visible")) {
+        	console.log('fade out');
+            $('.lightbox').fadeOut();
+        }
+    }        
+})
