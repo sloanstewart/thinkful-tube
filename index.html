@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
-        <title>Thinkful Tube</title>
+        <title>Youtube Data API</title>
         <script
           src="https://code.jquery.com/jquery-3.2.1.min.js"
           integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -16,7 +16,7 @@
         <h1>Find a rad video</h1>
           <form action="#" class="js-search-form">
             <div class="textfield-group">
-              <input type="text" class="js-query" placeholder="Search" value="">
+              <input type="text" class="js-query" maxlength="100" placeholder="Search" value="">
               <span class="highlight"></span>
               <span class="bar"></span>
               <label for="query"></label>
@@ -24,14 +24,16 @@
 
             <!-- <button type="submit">Search</button> -->
           </form>
-          <div class="js-search-results"></div>
-          <button class="js-prevpage" type="button" disabled="true">Prev Results</button>
-          <button class="js-nextpage" type="button" disabled="true">More Results</button>
+          <div class="js-search-results">
+            It's EASY! All you gotta do is use the search field above and you'll get a list of the most relevant vids courteousy of the <a href="https://developers.google.com/youtube/v3/" target="_blank">Youtube Data API</a>!
+          </div>
           <div class="lightbox">
             <div class="videoWrapper">
-			         <iframe class="ytplayer" type="text/html" src="" frameborder="0"></iframe>
+               <iframe class="ytplayer" type="text/html" src="" frameborder="0"></iframe>
             </div>
           </div>
+            <button class="js-prevpage" type="button" disabled="true">Prev Results</button>
+            <button class="js-nextpage" type="button" disabled="true">More Results</button>
       </main>
       <script src="index.js"></script>
     </body>
