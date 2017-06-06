@@ -2,12 +2,11 @@ var YOUTUBE_URL = 'https://www.googleapis.com/youtube/v3/search';
 var QUERY_HISTORY = null;
 var NEXT_PAGE_TOKEN = null;
 var PREV_PAGE_TOKEN = null;
-
 var RESULT_HTML_TEMPLATE = (
   '<div>' +
     '<h2>' +
-    '<a class="js-thumbnail-link" href="" target="_blank"><img class="js-thumbnail"></a><br>' +
-    '<a class="js-result-title" href="" target="_blank"></a><br><a class="js-chanel" href="" target="_blank"></a></h2>' +
+    '<img class="js-thumbnail"><br>' +
+    '<a class="js-result-title" href="" target="_blank"></a><br><a class="js-channel" href="" target="_blank"></a></h2>' +
     '<p>Date added: <span class="js-date"></span></p>' +
     '<p><span class="js-description"></span></p>' + 
   '</div>'
@@ -30,8 +29,10 @@ function renderResult(result) {
   template.find(".js-channel").text(result.snippet.channelTitle).attr("href", 'https://www.youtube.com/channel/'+result.snippet.channelId+'');
   template.find(".js-description").text(result.snippet.description);
   template.find(".js-date").text(result.snippet.publishedAt);
-  template.find(".js-thumbnail").attr("src", result.snippet.thumbnails.high.url);
-  template.find(".js-thumbnail-link").attr("href", 'https://www.youtube.com/watch?v='+result.id.videoId+'');
+  template.find(".js-thumbnail").attr("src", result.snippet.thumbnails.medium.url)
+  								.unbind().click(function(){
+  									$('#ytplayer').attr("src", 'https://www.youtube.com/embed/'+result.id.videoId+'?autoplay=1');
+  								});
   return template;
 }
 
@@ -42,8 +43,10 @@ function displayGitHubSearchData(data) {
 	$('.js-search-results').html(results);
 	console.log('API RESPONSE: \n');
 	console.dir(data);
+	// store page tokens to be used with buttons
 	NEXT_PAGE_TOKEN = data.nextPageToken;
 	PREV_PAGE_TOKEN = data.prevPageToken;
+	// if the tokens are stored, enable the buttons
 	if(NEXT_PAGE_TOKEN){$('.js-nextpage').prop('disabled', false);}
 	if(PREV_PAGE_TOKEN){$('.js-prevpage').prop('disabled', false);}
 }
@@ -57,14 +60,11 @@ function watchButtons() {
 		queryTarget.val("");
 		getDataFromApi(query, displayGitHubSearchData);
 	});
-
   	$('.js-nextpage').unbind().click(function(){
 		console.log('[More Results]');
 		getDataFromApi(QUERY_HISTORY, displayGitHubSearchData, NEXT_PAGE_TOKEN);
 	});
-
  	$('.js-prevpage').unbind().click(function(){
-  		
 		console.log('[Previous Results]');
 		getDataFromApi(QUERY_HISTORY, displayGitHubSearchData, PREV_PAGE_TOKEN);
 	});
