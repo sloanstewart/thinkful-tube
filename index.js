@@ -3,12 +3,13 @@ var QUERY_HISTORY = null;
 var NEXT_PAGE_TOKEN = null;
 var PREV_PAGE_TOKEN = null;
 var RESULT_HTML_TEMPLATE = (
-  '<div>' +
-    '<h2>' +
+  '<div class="result">' +
     '<img class="js-thumbnail"><br>' +
-    '<a class="js-result-title" href="" target="_blank"></a><br><a class="js-channel" href="" target="_blank"></a></h2>' +
-    '<p>Date added: <span class="js-date"></span></p>' +
-    '<p><span class="js-description"></span></p>' + 
+    '<div class="result-info">' +
+    	'<h2><a class="js-result-title" href="" target="_blank"></a></h2>' +
+    	'<p class="result-channel-date">By <a class="js-channel" href="" target="_blank"></a> on <span class="js-date"></span></p>' +
+    	'<span class="js-description"></span>' +
+    '</div>' +
   '</div>'
 );
 
@@ -25,10 +26,11 @@ function getDataFromApi(searchTerm, callback, page) {
 
 function renderResult(result) {
   var template = $(RESULT_HTML_TEMPLATE);
+  var date = new Date(result.snippet.publishedAt).toLocaleString();
   template.find(".js-result-title").text(result.snippet.title).attr("href", 'https://www.youtube.com/watch?v='+result.id.videoId+'');
   template.find(".js-channel").text(result.snippet.channelTitle).attr("href", 'https://www.youtube.com/channel/'+result.snippet.channelId+'');
   template.find(".js-description").text(result.snippet.description);
-  template.find(".js-date").text(result.snippet.publishedAt);
+  template.find(".js-date").text(date);
   template.find(".js-thumbnail").attr("src", result.snippet.thumbnails.medium.url)
 								.unbind('click')
 								.click(function(){

@@ -9,26 +9,29 @@
           integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
           crossorigin="anonymous"></script>
         <link href="index.css" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     </head>
     <body>
       <main>
         <h1>Find a rad video</h1>
           <form action="#" class="js-search-form">
-            <label for="query"></label>
-            <input type="text" class="js-query" value="booty">
-            <button type="submit">Search</button>
+            <div class="textfield-group">
+              <input type="text" class="js-query" placeholder="Search" value="">
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label for="query"></label>
+            </div>
+
+            <!-- <button type="submit">Search</button> -->
           </form>
-          <button type="button" id="test">lightbox</button>
+          <div class="js-search-results"></div>
+          <button class="js-prevpage" type="button" disabled="true">Prev Results</button>
+          <button class="js-nextpage" type="button" disabled="true">More Results</button>
           <div class="lightbox">
             <div class="videoWrapper">
 			         <iframe class="ytplayer" type="text/html" src="" frameborder="0"></iframe>
             </div>
           </div>
-
-          <h2>Results</h2>
-          <div class="js-search-results"></div>
-          <button class="js-prevpage" type="button" disabled="true">Prev Results</button>
-          <button class="js-nextpage" type="button" disabled="true">More Results</button>
       </main>
       <script src="index.js"></script>
     </body>
