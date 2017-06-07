@@ -66,6 +66,8 @@ function watchButtons() {
 		var query = queryTarget.val();
 		// clear out the input
 		queryTarget.val("");
+		// clear out search results
+		$('.js-search-results').empty();
 		getDataFromApi(query, displayGitHubSearchData);
 	});
   	$('.js-nextpage').unbind().click(function(){
