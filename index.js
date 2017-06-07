@@ -45,7 +45,7 @@ function displayGitHubSearchData(data) {
 	var results = data.items.map(function(item, index) {
 		return renderResult(item);
 	});
-	$('.js-search-results').html(results);
+	$('.js-search-results').append(results);
 	console.log('API RESPONSE: \n');
 	console.dir(data);
 	// store page tokens to be used with buttons
