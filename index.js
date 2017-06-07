@@ -53,7 +53,10 @@ function displayGitHubSearchData(data) {
 	PREV_PAGE_TOKEN = data.prevPageToken;
 	// if the tokens are stored, enable the buttons
 	if(NEXT_PAGE_TOKEN){$('.js-nextpage').prop('disabled', false);}
-	if(PREV_PAGE_TOKEN){$('.js-prevpage').prop('disabled', false);}
+	if(PREV_PAGE_TOKEN !== (null || undefined))
+		{$('.js-prevpage').prop('disabled', false);}
+	else{$('.js-prevpage').prop('disabled', true);}
+	
 }
 
 function watchButtons() {
@@ -72,6 +75,7 @@ function watchButtons() {
  	$('.js-prevpage').unbind().click(function(){
 		console.log('[Previous Results]');
 		getDataFromApi(QUERY_HISTORY, displayGitHubSearchData, PREV_PAGE_TOKEN);
+		PREV_PAGE_TOKEN = null;
 	});
 }
 
